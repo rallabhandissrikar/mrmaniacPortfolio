@@ -1,8 +1,29 @@
 import { Link } from 'react-router-dom';
 import TypingText from '../components/TypingText';
 import SectionDivider from '../components/SectionDivider';
+import { supabase } from '../../utils/supabase';
+import * as React from 'react';
 
 export default function Home() {
+  const [data, setData] = React.useState([]);
+
+  const fetchData = async () => {
+    const { data: projectsData, error } = await supabase
+      .from('Projects') // replace with your table name
+      .select('*')
+      .limit(3);
+    if (error) {
+      console.error('Error fetching data:', error);
+    } else {
+      setData(projectsData);
+      
+      console.log(projectsData);
+    }
+  }
+
+  React.useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <div className="min-h-screen bg-black text-[#E0E0E0]">
       <div className="container mx-auto px-6 py-20">
@@ -70,65 +91,29 @@ export default function Home() {
         <section className="mb-20">
           <h2 className="text-4xl font-bold text-[#00FF99] mb-8">PROJECTS</h2>
           <div className="space-y-6">
-            <div className="breathing-gradient border border-[#00FF99] border-opacity-30 p-8">
-              <h3 className="text-2xl font-bold text-[#00FF99] mb-3">TASKY – Task Manager App</h3>
-              <p className="text-sm text-[#00FF99] text-opacity-70 mb-4">Stack: Flutter + Django REST + JWT</p>
-              <p className="text-[#E0E0E0] mb-6">A clean CRUD productivity app with authentication.</p>
-              <div className="flex gap-4">
-                <a
-                  href="#"
-                  className="px-6 py-2 border border-[#00FF99] text-[#00FF99] neon-glow-hover transition-all"
-                >
-                  [LIVE DEMO]
-                </a>
-                <a
-                  href="#"
-                  className="px-6 py-2 border border-[#00FF99] text-[#00FF99] neon-glow-hover transition-all"
-                >
-                  [GITHUB]
-                </a>
-              </div>
-            </div>
-
-            <div className="breathing-gradient border border-[#00FF99] border-opacity-30 p-8">
-              <h3 className="text-2xl font-bold text-[#00FF99] mb-3">SHOPORA – E-Commerce Platform</h3>
-              <p className="text-sm text-[#00FF99] text-opacity-70 mb-4">Stack: Flutter + Django REST</p>
-              <p className="text-[#E0E0E0] mb-6">Full-stack shop with cart, orders, and admin panel.</p>
-              <div className="flex gap-4">
-                <a
-                  href="#"
-                  className="px-6 py-2 border border-[#00FF99] text-[#00FF99] neon-glow-hover transition-all"
-                >
-                  [LIVE DEMO]
-                </a>
-                <a
-                  href="#"
-                  className="px-6 py-2 border border-[#00FF99] text-[#00FF99] neon-glow-hover transition-all"
-                >
-                  [GITHUB]
-                </a>
-              </div>
-            </div>
-
-            <div className="breathing-gradient border border-[#00FF99] border-opacity-30 p-8">
-              <h3 className="text-2xl font-bold text-[#00FF99] mb-3">SKILLCHECK – AI Resume Analyzer</h3>
-              <p className="text-sm text-[#00FF99] text-opacity-70 mb-4">Stack: Flutter + Django + OpenAI API</p>
-              <p className="text-[#E0E0E0] mb-6">Upload a resume, get AI-based skill insights.</p>
-              <div className="flex gap-4">
-                <a
-                  href="#"
-                  className="px-6 py-2 border border-[#00FF99] text-[#00FF99] neon-glow-hover transition-all"
-                >
-                  [LIVE DEMO]
-                </a>
-                <a
-                  href="#"
-                  className="px-6 py-2 border border-[#00FF99] text-[#00FF99] neon-glow-hover transition-all"
-                >
-                  [GITHUB]
-                </a>
-              </div>
-            </div>
+            {data.map((project, idx) => {
+              return (
+                <div className="breathing-gradient border border-[#00FF99] border-opacity-30 p-8">
+                  <h3 className="text-2xl font-bold text-[#00FF99] mb-3">{project.name}</h3>
+                  <p className="text-sm text-[#00FF99] text-opacity-70 mb-4">Stack: {project.tools}</p>
+                  <p className="text-[#E0E0E0] mb-6">{project.desc}</p>
+                  <div className="flex gap-4">
+                    <a
+                      href={project.l_demo  || '#'}
+                      className="px-6 py-2 border border-[#00FF99] text-[#00FF99] neon-glow-hover transition-all"
+                    >
+                      [LIVE DEMO]
+                    </a>
+                    <a
+                      href={project.github || '#'}
+                      className="px-6 py-2 border border-[#00FF99] text-[#00FF99] neon-glow-hover transition-all"
+                    >
+                      [GITHUB]
+                    </a>
+                  </div>
+                </div>
+              )
+            })}
           </div>
 
           <div className="text-center mt-12">

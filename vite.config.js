@@ -7,4 +7,8 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
+  base: './', // ensures correct relative paths for SPA routing
+  build: {
+    outDir: 'dist',
+  },
 });
