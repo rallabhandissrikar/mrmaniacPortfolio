@@ -146,7 +146,7 @@ export default function Home() {
                 [SAY HELLO]
               </a>
               <a
-                href="https://www.linkedin.com/in/rallabhandi-srikar-1692b1271/"
+                href="https://www.linkedin.com/in/mrmaniac2005/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-8 py-3 border border-[#00FF99] text-[#00FF99] neon-glow-hover transition-all"
